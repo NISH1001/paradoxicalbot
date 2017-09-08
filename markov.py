@@ -7,6 +7,7 @@
 import random
 import re
 from dataloader import load_data
+from textprocessor import convert_tuples_to_string
 
 class MarkovChain:
     def __init__(self):
@@ -22,6 +23,28 @@ class MarkovChain:
         # generate bigrams
         word_pairs = [(words[i], words[i + 1]) for i in range(len(words) - 1)]
         for a, b in word_pairs:
+            if a not in self.trie:
+                self.trie[a] = {}
+            self.trie[a][b] = factor if b not in self.trie[a] \
+                    else self.trie[a][b] + self.trie[a][b] * factor
+
+    def train_ngram(self, n, text, factor=1):
+        """
+            Create/Update the naive trie structure.
+            For now, bigram model is used
+        """
+        words = filter(lambda s: len(s) > 0, re.split(r'[\s]', text))
+        words  = list(map(str.lower, words))
+        # generate bigrams
+        #word_pairs = [(words[i], words[i + 1]) for i in range(len(words) - 1)]
+        nd = n*2
+        for i in range(len(words) - nd - 1):
+            ngram = []
+            for j in range(nd):
+                ngram.append(words[i+j])
+
+            a = tuple(ngram[:n])
+            b = tuple(ngram[n : nd])
             if a not in self.trie:
                 self.trie[a] = {}
             self.trie[a][b] = factor if b not in self.trie[a] \
@@ -59,11 +82,14 @@ class MarkovChain:
 
 def main():
     text = load_data("data")
-    markov_chain = MarkovChain()
-    markov_chain.train(text)
-    start_word = "life"
-    words_generated = [ word for word in markov_chain.generate(start_word, max_len=25) ]
-    print(' '.join(words_generated))
+    mc = MarkovChain()
+    mc.train_ngram(1, text)
+    mc.train_ngram(2, text)
+    mc.train_ngram(3, text)
+    start_word = ('life', 'is',  )
+    words_generated = [ word for word in mc.generate(start_word, max_len=25) ]
+    print(words_generated)
+    print(convert_tuples_to_string(words_generated))
 
 
 if __name__ == "__main__":

@@ -17,8 +17,8 @@ FILLERS = ['do']
 def process(text):
     text = preprocess(text)
     words = text.split(" ")
-    words = list(filter(lambda w : w not in WORDS_WH, words))
-    words = list(map(lambda w : REFLECTION[w] if w in REFLECTION else w, words))
+    words = filter(lambda w : w not in WORDS_WH, words)
+    words = map(lambda w : REFLECTION[w] if w in REFLECTION else w, words)
     words = list(filter(lambda w : w not in FILLERS, words))
     return words
 
