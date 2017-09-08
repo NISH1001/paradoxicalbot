@@ -19,37 +19,45 @@ WORDS_WH = ['who', 'how', 'what', 'when', 'where', 'why', 'which', 'whom', 'whos
 
 FILLERS = ['do']
 
-def process(text):
-    text = preprocess(text)
-    words = text.split(" ")
-    words = filter(lambda w : w not in WORDS_WH, words)
-    words = map(lambda w : REFLECTION[w] if w in REFLECTION else w, words)
-    words = tuple(filter(lambda w : w not in FILLERS, words))
-    return words
+class Bot:
+    def __init__(self, markov_chain):
+        if not markov_chain:
+            raise ValueError("No MarkovChain supplied...")
+        self.markov_chain = markov_chain
 
-def generate_reply(markov_chain, start):
-    words_generated = [ word for word in markov_chain.generate(start, max_len=25) ]
-    return convert_tuples_to_string(words_generated)
+    def process(self, text):
+        text = preprocess(text)
+        words = text.split(" ")
+        words = filter(lambda w : w not in WORDS_WH and w not in FILLERS, words)
+        words = map(lambda w : REFLECTION[w] if w in REFLECTION else w, words)
+        return tuple(words)
 
-def run(markov_chain):
-    while True:
-        try:
-            you = input("You >> ")
-            keywords = process(you)
-            print(keywords)
-            bot = generate_reply(markov_chain, keywords)
-            print(bot)
-        except KeyboardInterrupt:
-            print("Bye. Cheers. Stay awesome...")
-            break
+    def generate_reply(self, start, reply_len=10):
+        words_generated = [ word for word in self.markov_chain.generate(start, reply_len) ]
+        return convert_tuples_to_string(words_generated)
+
+    def run(self):
+        while True:
+            try:
+                you = input("You >> ")
+                keywords = self.process(you)
+                print(keywords)
+                bot = self.generate_reply(keywords, reply_len=10)
+                print(bot)
+            except KeyboardInterrupt:
+                print("Bye. Cheers. Stay awesome...")
+                break
 
 def main():
     text = load_data("data")
+
     mc = MarkovChain()
     mc.train_ngram(1, text)
     mc.train_ngram(2, text)
     mc.train_ngram(3, text)
-    run(mc)
+
+    bot = Bot(mc)
+    bot.run()
 
 if __name__ == "__main__":
     main()
