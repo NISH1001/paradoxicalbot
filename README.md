@@ -1,5 +1,7 @@
 # paradoxicalbot
+
 A naive bot using markov chains
+
 --------
 
 ## Test Markov Chain
