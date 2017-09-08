@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+"""
+    The module for markov chain
+"""
+
 import random
 import re
 from dataloader import load_data
@@ -9,6 +13,10 @@ class MarkovChain:
         self.trie = {}
 
     def train(self, text, factor=1):
+        """
+            Create/Update the naive trie structure.
+            For now, bigram model is used
+        """
         words = filter(lambda s: len(s) > 0, re.split(r'[\s]', text))
         words  = list(map(str.lower, words))
         # generate bigrams
@@ -22,7 +30,7 @@ class MarkovChain:
     def generate(self, start_with=None, max_len=5):
         """
             Yield a sequence of words
-            until dead end is found or max lenght is exceeded
+            until dead end is found or max length is exceeded
         """
         if len(self.trie) == 0:
             return
@@ -53,9 +61,9 @@ def main():
     text = load_data("data")
     markov_chain = MarkovChain()
     markov_chain.train(text)
-    #print(markov_chain.trie)
-    for word in markov_chain.generate("the", max_len=25):
-        print(word, end=" ")
+    start_word = "life"
+    words_generated = [ word for word in markov_chain.generate(start_word, max_len=25) ]
+    print(' '.join(words_generated))
 
 
 if __name__ == "__main__":
