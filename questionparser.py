@@ -49,7 +49,7 @@ def process_aux_question(words):
     return words
 
 def process(text):
-    text = preprocess(text)
+    text = preprocess(text.strip())
     words = tuple(text.split(" "))
     if is_wh(words):
         words = process_wh(words)

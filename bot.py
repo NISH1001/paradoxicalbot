@@ -28,7 +28,7 @@ class Bot:
                 for keywords in questionparser.generate_variations(words):
                     words = self.generate_reply(keywords, reply_len=15)
                     if len(words) == 1 and words[0] == keywords:
-                        bot = "I can't know everything which the beauty of life itself."
+                        bot = "??? I can't know everything which is the beauty of life itself. ???"
                     else:
                         bot = convert_tuples_to_string(words)
                         break
