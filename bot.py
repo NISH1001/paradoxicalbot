@@ -16,7 +16,8 @@ class Bot:
 
     def generate_reply(self, start, reply_len=10):
         words_generated = [ word for word in self.markov_chain.generate(start, reply_len) ]
-        return convert_tuples_to_string(words_generated)
+        return words_generated
+        #return convert_tuples_to_string(words_generated)
 
     def run(self):
         while True:
@@ -25,8 +26,11 @@ class Bot:
                 words = questionparser.process(you)
                 bot = ""
                 for keywords in questionparser.generate_variations(words):
-                    bot = self.generate_reply(keywords, reply_len=10)
-                    if convert_tuples_to_string([keywords]) != bot:
+                    words = self.generate_reply(keywords, reply_len=15)
+                    if len(words) == 1 and words[0] == keywords:
+                        bot = "I can't know everything which the beauty of life itself."
+                    else:
+                        bot = convert_tuples_to_string(words)
                         break
                 print("Paradox >> {}".format(bot))
             except KeyboardInterrupt:
