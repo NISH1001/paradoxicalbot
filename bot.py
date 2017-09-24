@@ -38,7 +38,7 @@ class Bot:
                 break
 
 def main():
-    text = load_data("soulstories")
+    text = load_data("data")
 
     mc = MarkovChain()
     mc.train_ngram(1, text)

@@ -6,15 +6,16 @@ def segment_text(text, segment_size=3, overlap=2):
     """
     words = text.split()
     segments = []
-    for i in range(0, len(words), segment_size - overlap):
+    start = overlap if overlap > 0 else 0
+    for i in range(start, len(words), segment_size - overlap):
         word = words[i - overlap : i + segment_size - overlap]
         if word:
             segments.append(tuple(word))
     return segments
 
 def main():
-    text = "hello i am paradox i am gru i am no one"
-    segments = segment_text(text, segment_size = 3, overlap = -1)
+    text = "what are you doing in your life"
+    segments = segment_text(text, segment_size = 4, overlap = 2)
     print(segments)
 
 
