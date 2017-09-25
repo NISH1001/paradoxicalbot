@@ -36,3 +36,8 @@ You >> paradox
 Paradox >> paradox in a paradox in a paradox in your mind and
 You >> 
 ```
+
+--------
+
+## Abstract Architecture
+![Abstract Architecture](architecture.png)
