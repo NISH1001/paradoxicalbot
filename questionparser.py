@@ -13,8 +13,10 @@ REFLECTION_UNI = {
 }
 
 REFLECTION_BI = {
-    "i are" : "i am",
-    "are i" : "i am"
+    "i are" :   "i am",
+    "to i"  :   "to me",
+    "for i" :   "for me",
+    "by i"  :   "by me"
 }
 
 pattern = re.compile(r'\b(' + '|'.join(REFLECTION_BI.keys()) + r')\b')
@@ -26,6 +28,12 @@ WORDS_WH_AUX = ['do']
 WH_AUX = list(itertools.product(WORDS_WH, WORDS_WH_AUX))
 
 def reflect(words):
+    """
+        Reflects the words from question to reply.
+        Eg:
+            i -> you
+            you -> i
+    """
     words = map(lambda w : REFLECTION_UNI[w] if w in REFLECTION_UNI else w, words)
     words = pattern.sub(lambda x : REFLECTION_BI[x.group()], ' '.join(words))
     words = tuple(words.split(" "))
@@ -55,7 +63,7 @@ def process(text):
         words = process_wh(words)
     elif is_aux_question(words):
         words = process_aux_question(words)
-    words = reflect(words)
+    #words = reflect(words)
     return words
 
 def generate_variations(words):

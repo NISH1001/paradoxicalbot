@@ -81,7 +81,7 @@ class MarkovChain:
             yield word
 
 def main():
-    text = load_data("data")
+    text = load_data("data/paradox")
     mc = MarkovChain()
     mc.train_ngram(1, text)
     mc.train_ngram(2, text)

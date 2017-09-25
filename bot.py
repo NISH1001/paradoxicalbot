@@ -38,6 +38,8 @@ class Bot:
         """
         bot = ""
         for keywords in questionparser.generate_variations(segment):
+            keywords = questionparser.reflect(keywords)
+            print("Variation : {}".format(keywords))
             reply = self.generate_reply(keywords, reply_len)
             if len(reply) == 1 and reply[0] == keywords:
                 continue
@@ -75,7 +77,7 @@ class Bot:
                 break
 
 def main():
-    text = load_data("data")
+    text = load_data("data/paradox")
 
     mc = MarkovChain()
     mc.train_ngram(1, text)

@@ -10,7 +10,7 @@ def load_data(filename):
     return data
 
 def main():
-    data = load_data("data")
+    data = load_data("data/paradox")
     print(data)
 
 if __name__ == "__main__":
