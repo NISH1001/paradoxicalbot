@@ -23,7 +23,7 @@ pattern = re.compile(r'\b(' + '|'.join(REFLECTION_BI.keys()) + r')\b')
 
 WORDS_WH = ['who', 'how', 'what', 'when', 'where', 'why', 'which', 'whom', 'whose']
 WORDS_AUX = ['do', 'have']
-WORDS_WH_AUX = ['do']
+WORDS_WH_AUX = ['do', 'did']
 
 WH_AUX = list(itertools.product(WORDS_WH, WORDS_WH_AUX))
 

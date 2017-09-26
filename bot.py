@@ -77,8 +77,10 @@ class Bot:
                 break
 
 def main():
-    text = load_data("data/paradox")
+    print("Loading data...")
+    text = load_data("data/philosophy")
 
+    print("Building Markov model...")
     mc = MarkovChain()
     mc.train_ngram(1, text)
     mc.train_ngram(2, text)
