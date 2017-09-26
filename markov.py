@@ -64,7 +64,7 @@ class MarkovChain:
 
         #gen = (  (i for i in range(max_len)) or max_len == 0 )
 
-        rand = lambda x : random.random() * x
+        #rand = lambda x : random.random() * x
         i = 0
         while max_len == 0 or i < max_len:
             # dead end
@@ -74,11 +74,29 @@ class MarkovChain:
 
             # Otherwise, randomize against the weight of each leaf word divided
             # by the number of leaves.
-            dist = sorted([(w, rand(self.trie[word][w] / len(self.trie[word]))) \
-                           for w in self.trie[word]],
-                          key=lambda k: 1-k[1])
+            try:
+                dist = sorted([(w, rand(self.trie[word][w] / len(self.trie[word]))) \
+                            for w in self.trie[word]],
+                            key=lambda k: 1-k[1])
+            except OverflowError:
+                dist = sorted([(w, rand(self.trie[word][w] // len(self.trie[word]))) \
+                            for w in self.trie[word]],
+                            key=lambda k: 1-k[1])
             word = dist[0][0]
             yield word
+
+def rand(x):
+    """
+        OverflowError is handled when x is too large
+    """
+    val = x
+    try:
+        val = random.random() * x
+    except OverflowError:
+        val = x
+    return val
+
+
 
 def main():
     text = load_data("data/paradox")
