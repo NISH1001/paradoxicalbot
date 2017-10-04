@@ -78,7 +78,8 @@ class Bot:
 
 def main():
     print("Loading data...")
-    text = load_data("data/philosophy")
+    text = load_data("data/philosophy").lower()
+    text = preprocess(text)
 
     print("Building Markov model...")
     mc = MarkovChain()

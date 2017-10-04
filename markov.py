@@ -7,7 +7,7 @@
 import random
 import re
 from dataloader import load_data
-from textprocessor import convert_tuples_to_string
+from textprocessor import preprocess, convert_tuples_to_string
 
 class MarkovChain:
     def __init__(self):
@@ -67,6 +67,7 @@ class MarkovChain:
 
 def main():
     text = load_data("data/philosophy")
+    text = preprocess(text.lower())
     mc = MarkovChain()
     mc.train_ngram(1, text)
     mc.train_ngram(2, text)
