@@ -51,11 +51,11 @@ class Bot:
     def get_reply_len_for_segment(self, segment):
         length = len(segment)
         if length == 1:
-            return 10
-        elif length == 2:
             return 5
+        elif length == 2:
+            return 2
         else:
-            return 3
+            return 1
 
     def run(self):
         while True:
