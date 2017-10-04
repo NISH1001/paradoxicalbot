@@ -13,21 +13,6 @@ class MarkovChain:
     def __init__(self):
         self.trie = {}
 
-    def train(self, text, factor=1):
-        """
-            Create/Update the naive trie structure.
-            For now, bigram model is used
-        """
-        words = filter(lambda s: len(s) > 0, re.split(r'[\s]', text))
-        words  = list(map(str.lower, words))
-        # generate bigrams
-        word_pairs = [(words[i], words[i + 1]) for i in range(len(words) - 1)]
-        for a, b in word_pairs:
-            if a not in self.trie:
-                self.trie[a] = {}
-            self.trie[a][b] = factor if b not in self.trie[a] \
-                    else self.trie[a][b] + self.trie[a][b] * factor
-
     def train_ngram(self, n, text, factor=1):
         """
             Create/Update the naive trie structure.
@@ -48,7 +33,7 @@ class MarkovChain:
             if a not in self.trie:
                 self.trie[a] = {}
             self.trie[a][b] = factor if b not in self.trie[a] \
-                    else self.trie[a][b] + self.trie[a][b] * factor
+                    else self.trie[a][b] + 1 * factor
 
     def generate(self, start_with=None, max_len=5):
         """
@@ -64,7 +49,7 @@ class MarkovChain:
 
         #gen = (  (i for i in range(max_len)) or max_len == 0 )
 
-        #rand = lambda x : random.random() * x
+        rand = lambda x : random.random() * x
         i = 0
         while max_len == 0 or i < max_len:
             # dead end
@@ -74,40 +59,26 @@ class MarkovChain:
 
             # Otherwise, randomize against the weight of each leaf word divided
             # by the number of leaves.
-            try:
-                dist = sorted([(w, rand(self.trie[word][w] / len(self.trie[word]))) \
-                            for w in self.trie[word]],
-                            key=lambda k: 1-k[1])
-            except OverflowError:
-                dist = sorted([(w, rand(self.trie[word][w] // len(self.trie[word]))) \
-                            for w in self.trie[word]],
-                            key=lambda k: 1-k[1])
+            dist = sorted([(w, rand(self.trie[word][w] / len(self.trie[word]))) \
+                        for w in self.trie[word]],
+                        key=lambda k: 1-k[1])
             word = dist[0][0]
             yield word
 
-def rand(x):
-    """
-        OverflowError is handled when x is too large
-    """
-    val = x
-    try:
-        val = random.random() * x
-    except OverflowError:
-        val = x
-    return val
-
-
-
 def main():
-    text = load_data("data/paradox")
+    text = load_data("data/philosophy")
     mc = MarkovChain()
     mc.train_ngram(1, text)
     mc.train_ngram(2, text)
     mc.train_ngram(3, text)
+    print(mc.trie)
+
+    """
     start_word = ('life', 'is',  )
     words_generated = [ word for word in mc.generate(start_word, max_len=25) ]
     print(words_generated)
     print(convert_tuples_to_string(words_generated))
+    """
 
 
 if __name__ == "__main__":

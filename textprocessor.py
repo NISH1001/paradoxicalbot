@@ -2,10 +2,10 @@
 import re
 
 def reduce_whitespaces(text):
-    return re.sub(r"[\s\n-]+", " ", text)
+    return re.sub(r"[\s\n-_]+", " ", text)
 
 def preprocess(text):
-    return reduce_whitespaces(re.sub(r"[,\.\"'!()?]+", "", text))
+    return reduce_whitespaces(re.sub(r"[\[\],\.\"'!()?]+", "", text))
 
 def convert_tuples_to_string(tuples):
     tuples_str = map(lambda tup : ' '.join(tup), tuples)
