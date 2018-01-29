@@ -5,7 +5,7 @@ from textprocessor import preprocess
 def load_data(filename):
     data = ""
     with open(filename, 'r') as f:
-        data = preprocess(f.read())
+        data = f.read()
     return data
 
 def main():
