@@ -198,9 +198,9 @@ def generate(initial_words):
         for n in range(gen_length):
             # Dynamic Input
             dyn_input = [[vocab_to_int[word] for word in gen_sentences[-seq_length:]]]
-            print("dyn_input :: {}".format(dyn_input))
+            #print("dyn_input :: {}".format(dyn_input))
             dyn_seq_length = len(dyn_input[0])
-            print("dyn_seq_length :: {}".format(dyn_seq_length))
+            #print("dyn_seq_length :: {}".format(dyn_seq_length))
 
             # Get Prediction
             probabilities, prev_state = sess.run(
