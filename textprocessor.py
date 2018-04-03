@@ -4,7 +4,7 @@ import re
 from collections import Counter
 
 def reduce_whitespaces(text):
-    return re.sub(r"[\s\n]+", " ", text)
+    return re.sub(r"[\s]+", " ", text)
 
 def preprocess(text):
     #return reduce_whitespaces(re.sub(r"[\[\],\"'!()?]+", "", text))
