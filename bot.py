@@ -223,9 +223,9 @@ def generate(initial_words):
 
 def main():
     mode = sys.argv[1]
-    if mode == "train":
+    if mode == "--train":
         train()
-    elif mode == "generate" and len(sys.argv[1:])>1:
+    elif mode == "--generate" and len(sys.argv[1:])>1:
         initial_words = sys.argv[2:]
         generate(initial_words)
     else:
